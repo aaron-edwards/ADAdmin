@@ -2,6 +2,7 @@ import { config } from "../config.ts";
 import type { GameState, ServerState, ServerStatus } from "../types.ts";
 import { queryServerState } from "./satisfactory-api.ts";
 import { controlUnit, unitState } from "./systemd.ts";
+import { isUpdating } from "./update.ts";
 
 const idleShutdownMs = config.satisfactory.idleShutdownMinutes * 60_000;
 let seenPlayer = false;
@@ -25,6 +26,7 @@ export async function getServerStatus(): Promise<ServerStatus> {
 }
 
 function deriveState(unit: string, apiUp: boolean): ServerState {
+  if (isUpdating()) return "updating";
   switch (unit) {
     case "active":
     case "reloading":

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
 import { api } from "../utils/api";
+import { LogViewer } from "./LogViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 // Unreal prefixes lines with a UTC timestamp and frame number, e.g.
@@ -13,13 +13,6 @@ export function LogsCard() {
     queryFn: api.getLogs,
     refetchInterval: 10_000,
   });
-  const scroller = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (logs.data && scroller.current) {
-      scroller.current.scrollTop = scroller.current.scrollHeight;
-    }
-  }, [logs.data]);
 
   return (
     <Card>
@@ -27,10 +20,7 @@ export function LogsCard() {
         <CardTitle>Recent log</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <div
-          ref={scroller}
-          className="max-h-96 overflow-auto bg-gray-900 p-3 font-mono text-xs leading-relaxed text-gray-100"
-        >
+        <LogViewer scrollKey={logs.data}>
           {logs.isError && <p className="text-red-400">{logs.error.message}</p>}
           {logs.data?.length === 0 && (
             <p className="text-gray-400">No log lines yet.</p>
@@ -44,7 +34,7 @@ export function LogsCard() {
               {line.message.replace(unrealPrefix, "")}
             </div>
           ))}
-        </div>
+        </LogViewer>
       </CardContent>
     </Card>
   );

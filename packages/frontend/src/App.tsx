@@ -1,5 +1,6 @@
 import { LogsCard } from "./components/LogsCard";
 import { ServerCard } from "./components/ServerCard";
+import { UpdateCard } from "./components/UpdateCard";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
           <p className="text-sm text-gray-600">Satisfactory Server Manager</p>
         </header>
         <ServerCard />
+        <UpdateCard />
         <LogsCard />
       </div>
     </div>

@@ -3,9 +3,10 @@ import type {
   ServerState,
   ServerStatus,
 } from "@adadmin/backend/types";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { api } from "../utils/api";
+import { useServerStatus } from "../utils/queries";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { Badge, type BadgeProps } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -20,10 +21,9 @@ const stateBadges: Record<
   running: { label: "Running", variant: "success" },
   stopping: { label: "Stopping…", variant: "warning" },
   failed: { label: "Failed", variant: "error" },
+  updating: { label: "Updating…", variant: "warning" },
   unmanaged: { label: "Running outside systemd", variant: "warning" },
 };
-
-const transitional: ServerState[] = ["starting", "stopping"];
 
 type ConfirmableAction = Exclude<ServerAction, "start">;
 
@@ -47,14 +47,7 @@ export function ServerCard() {
   const queryClient = useQueryClient();
   const [confirming, setConfirming] = useState<ConfirmableAction | null>(null);
 
-  const status = useQuery({
-    queryKey: ["serverStatus"],
-    queryFn: api.getStatus,
-    refetchInterval: (query) =>
-      transitional.includes(query.state.data?.state ?? "stopped")
-        ? 2_000
-        : 5_000,
-  });
+  const status = useServerStatus();
 
   const control = useMutation({
     mutationFn: api.control,

@@ -4,6 +4,7 @@ export type ServerState =
   | "running"
   | "stopping"
   | "failed"
+  | "updating"
   // The game API answers but satisfactory.service isn't active, so the server
   // was started some other way and can't be controlled from here.
   | "unmanaged";
@@ -30,4 +31,13 @@ export type ServerAction = (typeof serverActions)[number];
 export interface LogLine {
   time: number;
   message: string;
+}
+
+export interface UpdateStatus {
+  state: "idle" | "running" | "succeeded" | "failed";
+  output: string[];
+  startedAt: number | null;
+  finishedAt: number | null;
+  buildBefore: string | null;
+  buildAfter: string | null;
 }
