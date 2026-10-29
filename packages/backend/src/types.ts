@@ -1,0 +1,31 @@
+export type ServerState =
+  | "stopped"
+  | "starting"
+  | "running"
+  | "stopping"
+  | "failed"
+  // The game API answers but satisfactory.service isn't active, so the server
+  // was started some other way and can't be controlled from here.
+  | "unmanaged";
+
+export interface GameState {
+  sessionName: string;
+  players: number;
+  playerLimit: number;
+  techTier: number;
+  isPaused: boolean;
+  tickRate: number;
+}
+
+export interface ServerStatus {
+  state: ServerState;
+  game: GameState | null;
+}
+
+export const serverActions = ["start", "stop", "restart"] as const;
+export type ServerAction = (typeof serverActions)[number];
+
+export interface LogLine {
+  time: number;
+  message: string;
+}
