@@ -121,6 +121,17 @@ export function ServerCard() {
           </dl>
         )}
 
+        {status.data?.idleShutdownAt && (
+          <p className="rounded-md bg-yellow-50 p-3 text-sm text-yellow-800">
+            Nobody's connected. Stopping at{" "}
+            {new Date(status.data.idleShutdownAt).toLocaleTimeString([], {
+              hour: "numeric",
+              minute: "2-digit",
+            })}{" "}
+            unless someone joins.
+          </p>
+        )}
+
         <div className="grid grid-cols-3 gap-2">
           <Button
             disabled={!canStart || busy}

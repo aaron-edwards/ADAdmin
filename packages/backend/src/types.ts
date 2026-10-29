@@ -20,6 +20,8 @@ export interface GameState {
 export interface ServerStatus {
   state: ServerState;
   game: GameState | null;
+  // When the server will be stopped for being empty (epoch ms), if it's empty.
+  idleShutdownAt: number | null;
 }
 
 export const serverActions = ["start", "stop", "restart"] as const;

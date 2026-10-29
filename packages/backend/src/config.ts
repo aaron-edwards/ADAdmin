@@ -7,6 +7,7 @@ const envSchema = z.object({
     .string()
     .optional()
     .transform((token) => token || undefined),
+  IDLE_SHUTDOWN_MINUTES: z.coerce.number().nonnegative().default(2),
 });
 
 const result = envSchema.safeParse(process.env);
@@ -22,5 +23,6 @@ export const config = {
   },
   satisfactory: {
     apiToken: result.data.SATISFACTORY_API_TOKEN,
+    idleShutdownMinutes: result.data.IDLE_SHUTDOWN_MINUTES,
   },
 } as const;
