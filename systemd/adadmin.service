@@ -1,6 +1,5 @@
 [Unit]
 Description=ADAdmin web app for the Satisfactory server
-After=network-online.target
 
 [Service]
 Type=simple
