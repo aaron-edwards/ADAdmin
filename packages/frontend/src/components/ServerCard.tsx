@@ -34,12 +34,12 @@ const confirmations: Record<
   stop: {
     title: "Stop the server?",
     label: "Stop",
-    body: "The server saves and shuts down.",
+    body: "The server doesn't save when it stops, so progress since the last save is lost. It saves every 5 minutes and whenever a player leaves.",
   },
   restart: {
     title: "Restart the server?",
     label: "Restart",
-    body: "The server saves, shuts down and starts again.",
+    body: "The server doesn't save when it stops, so progress since the last save is lost. It saves every 5 minutes and whenever a player leaves.",
   },
 };
 
