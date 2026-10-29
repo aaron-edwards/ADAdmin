@@ -1,0 +1,13 @@
+[Unit]
+Description=ADAdmin web app for the Satisfactory server
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=@REPO@
+ExecStart=/usr/bin/mise exec -- node --env-file-if-exists=.env packages/backend/dist/index.js
+Environment=NODE_ENV=production
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

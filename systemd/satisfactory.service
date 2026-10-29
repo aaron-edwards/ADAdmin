@@ -1,0 +1,19 @@
+[Unit]
+Description=Satisfactory dedicated server
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Games/SatisfactoryDedicatedServer
+# Refuse to start if a copy launched outside systemd is already running.
+ExecStartPre=/bin/sh -c '! pgrep -f "[F]actoryServer-Linux-Shipping" >/dev/null || { echo "Server already running outside systemd" >&2; exit 1; }'
+ExecStart=/usr/bin/systemd-inhibit --what=sleep:idle:handle-lid-switch \
+  --who="Satisfactory Server" --why="Dedicated server running" --mode=block \
+  %h/Games/SatisfactoryDedicatedServer/FactoryServer.sh \
+  -ini:Engine:[SystemSettings]:FG.DedicatedServer.AllowInsecureLocalAccess=1
+# SIGINT makes the server save and exit cleanly; give it time to do so.
+KillSignal=SIGINT
+TimeoutStopSec=180
+
+[Install]
+WantedBy=default.target
